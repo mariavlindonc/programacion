@@ -40,6 +40,8 @@ void play()
         endgame = checkWin(player);
         
     } while (endgame == false);
+
+    cout << "The winner is " << player;
 }
 
 void printBoard()
