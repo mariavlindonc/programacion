@@ -8,21 +8,62 @@ char board [3][3] =
         {'7', '8', '9'}
     };
 
-void play();
+char play();
 void printBoard();
-void move(char player);
+void resetBoard();
+void move(char player, int full[9]);
 bool checkWin(char player);
+bool checkDraw();
 
 int main()
 {
-    play();
+    int replay;
+    char player;
+    int Xwin = 0;
+    int Owin = 0;
+
+    cout << "---------------------\n";
+    cout << "¡Bienvenido al juego!\n";
+    cout << "---------------------\n";
+    
+    do
+    {
+        player = play();
+        if (player != 'E')
+        {
+            if (player == 'X')
+            {
+                Xwin++;
+            } 
+            else
+            {
+                Owin++;
+            }
+        }
+        cout << "---------------------\n";
+        cout << "Puntajes:\n";
+        cout << "X = " << Xwin << "\n";
+        cout << "O = " << Owin << "\n";
+        cout << "---------------------\n";
+        do
+        {
+            cout << "¿Quieres jugar de nuevo?\n";
+            cout << "[1] Sí\n";
+            cout << "[2] No\n";
+            cin >> replay;
+        } while (replay < 1 || replay > 2);
+        resetBoard();
+    } while (replay == 1);
+
     return 0;
 }
 
-void play()
+char play()
 {
     bool endgame = false;
+    bool draw = false;
     int cont = 0;
+    int full[9] = {};
     char player;
 
     printBoard();
@@ -30,18 +71,30 @@ void play()
     do
     {
         cont = cont + 1;
+        
         if (cont % 2 == 0) 
             player = 'X';
         else
             player = 'O';
         
-        move(player);
+        move(player, full);
         printBoard();
         endgame = checkWin(player);
-        
-    } while (endgame == false);
+        draw = checkDraw();
 
-    cout << "The winner is " << player;
+    } while (endgame == false && draw == false);
+
+    if (endgame == true)
+    {
+        cout << "El ganador es " << player << " \n";
+    } 
+    else
+    {
+        cout << "Es un empate.\n";
+        player = 'E';
+    }
+
+    return player;
 }
 
 void printBoard()
@@ -56,14 +109,23 @@ void printBoard()
 
 }
 
-void move(char player)
+void move(char player, int full[9])
 {
     int casillero;
+
     do {
         cout << "Ingrese a que casillero se quiere mover (1-9): ";
         cin >> casillero;
+        if (full[casillero] == casillero)
+        {
+            cout << "El lugar está ocupado. ¡Elija otra posición!\n";
+            casillero = 0;
+        } 
+        else 
+        {
+            full[casillero] = casillero;
+        }
     } while (casillero < 1 || casillero > 9);
-    
 
     switch (casillero)
     {
@@ -99,11 +161,44 @@ void move(char player)
 
 bool checkWin(char player)
 {
+    for (int i = 0; i < 3; i++) 
+    {
+        if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+            (board[0][i] == player && board[1][i] == player && board[2][i] == player))
+            return true;
+    }
+    
     if ((board[0][0] == player && board[1][1] == player && board [2][2] == player) || 
-        (board[0][2] == player && board[1][1] == player && board[2][0] == player) ||
-        (board[0][0] == player && board[0][1] == player && board [0][2] == player))
+        (board[0][2] == player && board[1][1] == player && board[2][0] == player))
     {
         return true;
     }
+
     return false;
+}
+
+bool checkDraw()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if ((board[i][j] != 'O') && (board[i][j] != 'X'))
+            return false;
+        }
+    }
+    return true;
+}
+
+void resetBoard()
+{
+    board [0][0] = '1';
+    board [0][1] = '2';
+    board [0][2] = '3';
+    board [1][0] = '4';
+    board [1][1] = '5';
+    board [1][2] = '6';
+    board [2][0] = '7';
+    board [2][1] = '8';
+    board [2][2] = '9';
 }
