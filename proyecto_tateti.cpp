@@ -21,30 +21,33 @@ int main()
     char player;
     int Xwin = 0;
     int Owin = 0;
+    int draws = 0;
 
-    cout << "---------------------\n";
+    cout << "\n₊˚⊹⋆˙˚˖ ࣪☆.°*₊˚⊹⋆˙˚˖ ࣪\n";
     cout << "¡Bienvenido al juego!\n";
-    cout << "---------------------\n";
+    cout << "⋆˙˚˖ ࣪☆.°*₊˚⊹⋆˙˚˖ ࣪☆.°*\n\n";
     
     do
     {
         player = play();
-        if (player != 'E')
+        if (player == 'E')
         {
-            if (player == 'X')
-            {
-                Xwin++;
-            } 
-            else
-            {
-                Owin++;
-            }
+            draws++;
         }
-        cout << "---------------------\n";
+        else if (player == 'X')
+        {
+            Xwin++;
+        } 
+        else
+        {
+            Owin++;
+        }
+        cout << "───────────── ⋆⋅☆⋅⋆ ────────────\n";
         cout << "Puntajes:\n";
         cout << "X = " << Xwin << "\n";
         cout << "O = " << Owin << "\n";
-        cout << "---------------------\n";
+        cout << "Empates = " << draws << "\n";
+        cout << "───────────── ⋆⋅☆⋅⋆ ────────────\n";
         do
         {
             cout << "¿Quieres jugar de nuevo?\n";
@@ -54,6 +57,13 @@ int main()
         } while (replay < 1 || replay > 2);
         resetBoard();
     } while (replay == 1);
+
+    cout << "───────────── ⋆⋅☆⋅⋆ ────────────\n";
+    cout << "Partidas totales:\n";
+    cout << "Has jugado " << draws + Xwin + Owin << " partidas.\n\n";
+    cout << "⋆˙˚˖ ࣪☆.°*₊˚⊹˖ ࣪☆.°⊹*\n";
+    cout << "¡Gracias por jugar!\n";
+    cout << "⋆˙˚˖ ࣪☆.°*˚₊˚°*˙˚˖ ࣪☆.\n\n";
 
     return 0;
 }
@@ -86,7 +96,7 @@ char play()
 
     if (endgame == true)
     {
-        cout << "El ganador es " << player << " \n";
+        cout << "El ganador es " << player << "\n";
     } 
     else
     {
@@ -105,7 +115,7 @@ void printBoard()
     cout << "|  " << board [1][0]<< "  |  "<<board[1][1]<<"  |  "<<board[1][2]<<"  |\n";
     cout << "|-----|-----|-----|\n";
     cout << "|  " << board [2][0]<< "  |  "<<board[2][1]<<"  |  "<<board[2][2]<<"  |\n";
-    cout << "-------------------\n";
+    cout << "-------------------\n\n";
 
 }
 
@@ -114,11 +124,14 @@ void move(char player, int full[9])
     int casillero;
 
     do {
+        cout << "Es el turno de " << player << "...\n";
         cout << "Ingrese a que casillero se quiere mover (1-9): ";
         cin >> casillero;
+        cout << "\n";
+
         if (full[casillero] == casillero)
         {
-            cout << "El lugar está ocupado. ¡Elija otra posición!\n";
+            cout << "⚠︎ El lugar está ocupado. ¡Elija otra posición! ⚠︎\n\n";
             casillero = 0;
         } 
         else 
